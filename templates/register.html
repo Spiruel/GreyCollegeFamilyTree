@@ -1,0 +1,92 @@
+{% extends "layout.html" %}
+
+{% block script %}
+        function loading(){
+            $("#loading").show();
+            $("#content").hide();       
+        }
+{% endblock %}
+
+{% block content %}
+
+<style>
+div#loading {
+    width: 160px;
+    height: 24px;
+    display: none;
+    background: url(/static/loadingimage.gif) no-repeat;
+    cursor: wait;
+    }
+</style>
+
+    <div id="loading"></div>
+
+    <div id="content">
+    <h2>Registration</h2>
+
+    <p>Don't know CIS usernames for your college family? <a target="_blank" href="http://community.dur.ac.uk/grey.jcr/onlineServices/findUser.php"><b>Look them up here.</b></a></p>
+    <p>Note: The 'college dad' and 'college mum' titles are not gender-dependent.</p>
+    <p>A CIS username should consist of lowercase letters and numbers. A green tick symbol will indicate if the username is of the correct form.</p>
+    <p>Please enter your username, as a parent or child, and the usernames of the rest of your college family.</p>
+
+    <form method="POST" name="registrationform">
+      The college dad's username:<br>
+      <input type="text" pattern="^[a-z]{4}\d{2}$" name="partner1" required="required" oninvalid="this.setCustomValidity('Please enter a valid CIS username.')">
+      <br>
+      <br>The college mum's username:<br>
+      <input type="text" pattern="^[a-z]{4}\d{2}$" name="partner2" required="required" oninvalid="this.setCustomValidity('Please enter a valid CIS username.')">
+      <br>
+      <br>College child #1's username:<br>
+      <input type="text" pattern="^[a-z]{4}\d{2}$" name="child1" required="required" oninvalid="this.setCustomValidity('Please enter a valid CIS username.')">
+      <br>
+      <br>College child #2's username:<br>
+      <input type="text" pattern="^[a-z]{4}\d{2}$" name="child2" required="required" oninvalid="this.setCustomValidity('Please enter a valid CIS username.')">
+      <br><br>
+      <input type="submit" name="anything_submit" value="Submit" onclick="loading();">
+    </form> 
+    <p>
+    <p>Verification emails will be sent to out to all family members listed.  All four family members must individually verify in order to successfully register.</p>
+    <p>Verifications links are active for <b>24 hours only.</b></p>
+    If there are any problems (eg don't have a CIS username anymore), please contact <a href="mailto:s.j.bancroft@durham.ac.uk">s.j.bancroft@durham.ac.uk</a>.
+
+    <style type="text/css">
+
+      input:required:invalid, input:focus:invalid {
+        background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAeVJREFUeNqkU01oE1EQ/mazSTdRmqSxLVSJVKU9RYoHD8WfHr16kh5EFA8eSy6hXrwUPBSKZ6E9V1CU4tGf0DZWDEQrGkhprRDbCvlpavan3ezu+LLSUnADLZnHwHvzmJlvvpkhZkY7IqFNaTuAfPhhP/8Uo87SGSaDsP27hgYM/lUpy6lHdqsAtM+BPfvqKp3ufYKwcgmWCug6oKmrrG3PoaqngWjdd/922hOBs5C/jJA6x7AiUt8VYVUAVQXXShfIqCYRMZO8/N1N+B8H1sOUwivpSUSVCJ2MAjtVwBAIdv+AQkHQqbOgc+fBvorjyQENDcch16/BtkQdAlC4E6jrYHGgGU18Io3gmhzJuwub6/fQJYNi/YBpCifhbDaAPXFvCBVxXbvfbNGFeN8DkjogWAd8DljV3KRutcEAeHMN/HXZ4p9bhncJHCyhNx52R0Kv/XNuQvYBnM+CP7xddXL5KaJw0TMAF8qjnMvegeK/SLHubhpKDKIrJDlvXoMX3y9xcSMZyBQ+tpyk5hzsa2Ns7LGdfWdbL6fZvHn92d7dgROH/730YBLtiZmEdGPkFnhX4kxmjVe2xgPfCtrRd6GHRtEh9zsL8xVe+pwSzj+OtwvletZZ/wLeKD71L+ZeHHWZ/gowABkp7AwwnEjFAAAAAElFTkSuQmCC);
+        background-position: right top;
+        background-repeat: no-repeat;
+        -moz-box-shadow: none;
+      }
+      input:required:valid {
+        background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAepJREFUeNrEk79PFEEUx9/uDDd7v/AAQQnEQokmJCRGwc7/QeM/YGVxsZJQYI/EhCChICYmUJigNBSGzobQaI5SaYRw6imne0d2D/bYmZ3dGd+YQKEHYiyc5GUyb3Y+77vfeWNpreFfhvXfAWAAJtbKi7dff1rWK9vPHx3mThP2Iaipk5EzTg8Qmru38H7izmkFHAF4WH1R52654PR0Oamzj2dKxYt/Bbg1OPZuY3d9aU82VGem/5LtnJscLxWzfzRxaWNqWJP0XUadIbSzu5DuvUJpzq7sfYBKsP1GJeLB+PWpt8cCXm4+2+zLXx4guKiLXWA2Nc5ChOuacMEPv20FkT+dIawyenVi5VcAbcigWzXLeNiDRCdwId0LFm5IUMBIBgrp8wOEsFlfeCGm23/zoBZWn9a4C314A1nCoM1OAVccuGyCkPs/P+pIdVIOkG9pIh6YlyqCrwhRKD3GygK9PUBImIQQxRi4b2O+JcCLg8+e8NZiLVEygwCrWpYF0jQJziYU/ho2TUuCPTn8hHcQNuZy1/94sAMOzQHDeqaij7Cd8Dt8CatGhX3iWxgtFW/m29pnUjR7TSQcRCIAVW1FSr6KAVYdi+5Pj8yunviYHq7f72po3Y9dbi7CxzDO1+duzCXH9cEPAQYAhJELY/AqBtwAAAAASUVORK5CYII=);
+        background-position: right top;
+        background-repeat: no-repeat;
+      }
+
+    </style>
+
+    <script type="text/javascript">
+
+      // ref: http://diveintohtml5.org/detect.html
+      function supports_input_placeholder()
+      {
+        var i = document.createElement('input');
+        return 'placeholder' in i;
+      }
+
+      if(!supports_input_placeholder()) {
+        var fields = document.getElementsByTagName('INPUT');
+        for(var i=0; i < fields.length; i++) {
+          if(fields[i].hasAttribute('placeholder')) {
+            fields[i].defaultValue = fields[i].getAttribute('placeholder');
+            fields[i].onfocus = function() { if(this.value == this.defaultValue) this.value = ''; }
+            fields[i].onblur = function() { if(this.value == '') this.value = this.defaultValue; }
+          }
+        }
+      }
+
+    </script>
+
+    </div>
+    
+{% endblock %}

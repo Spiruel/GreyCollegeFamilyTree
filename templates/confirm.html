@@ -1,0 +1,15 @@
+{% extends "layout.html" %}
+
+{% block script %}
+
+{% endblock %}
+
+{% block content %}
+    {% if error %}
+    <p class=error>{{ error }} <br>    
+    <p>Confused about an error? Please contact <a href="mailto:s.j.bancroft@durham.ac.uk">s.j.bancroft@durham.ac.uk</a>.</p>
+    {% endif %}
+    {% if alert %}
+    <p class=alert>{{ alert }} <br>
+    {% endif %}
+{% endblock %}

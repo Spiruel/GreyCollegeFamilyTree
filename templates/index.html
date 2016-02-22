@@ -1,0 +1,39 @@
+{% extends "layout.html" %}
+
+{% block script %}
+
+{% endblock %}
+
+{% block content %}
+    {% if error %}
+    <p class=error><strong>Error:</strong> {{ error }} <br>
+    {% endif %}
+    <b>This family tree website is WORK IN PROGRESS. Please report any errors to s.j.bancroft@dur.ac.uk!<b>
+    <h4>To begin, search for a Grey College Student:</h4>
+    
+    <br>
+    Search for student name or CIS username:
+    <form action="." method="POST">
+            <input type="text" name="text">
+            <input type="submit" name="my-form" value="Search">
+        </form>
+    <br><br>
+    
+    <h4><a href="register.html">Can't find yourself on the family tree? Register your college family here.</a></h4>
+
+    <!--<h3>Family Tree database contains 160 marriages involving 613 people as of Sat Jan 2 20:27:56 2016.</h3>-->
+
+<div style="float:left;">
+<a href="https://twitter.com/share" class="twitter-share-button" data-url="http://www.greycollegefamilytree.co.uk" data-text="A college family tree for Grey College" data-count="horizontal">Tweet</a><script type="text/javascript" src="//platform.twitter.com/widgets.js"></script>
+</div>
+
+<div class="fb-share-button" data-layout="button_count" style="float:left;">
+<a name="fb_share"></a>
+<script src="http://static.ak.fbcdn.net/connect.php/js/FB.Share"
+        type="text/javascript"></script>
+
+</div>
+
+<div class="clear"></div>
+
+{% endblock %}
