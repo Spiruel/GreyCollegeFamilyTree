@@ -12,13 +12,6 @@ file_handler = logging.FileHandler(filename='/var/www/greycollegefamilytree.co.u
 file_handler.setLevel(logging.WARNING)
 app.logger.addHandler(file_handler)
 
-ADMINS = ['spiruel@gmail.com']
-mail_handler = SMTPHandler('smtp.gmail.com:587',
-                           'server-error@greycollegefamilytree.co.uk',
-                           ADMINS, 'YourApplication Failed', credentials=('spiruel@gmail.com','iuds43smew'))
-mail_handler.setLevel(logging.ERROR)
-app.logger.addHandler(mail_handler)
-
 @app.route('/', methods=['GET', 'POST'])
 def my_form_post():
     global name, html_content
