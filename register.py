@@ -254,8 +254,8 @@ ol li {
 </body>
 """
 
-    username = 'spiruel@gmail.com'
-    password = 'iuds43smew'
+    username = 'greycollegefamilytree@gmail.com'
+    password = 'eddingtongingercake16'
 
     server = smtplib.SMTP('smtp.gmail.com:587')
     server.ehlo()
@@ -272,7 +272,7 @@ def get_name(username):
             if row[8] == username:
                 return row[1] + ' ' + row[0]
         else:
-            return None
+            return username
                 
 def get_email(username):
     with open('/var/www/greycollegefamilytree.co.uk/http/familytree/greystudents.csv', 'r') as read_file:
