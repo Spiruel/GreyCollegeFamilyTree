@@ -266,7 +266,7 @@ ol li {
     server.quit()
 
 def get_name(username):
-    with open('/var/www/greycollegefamilytree.co.uk/http/familytree/greystudents.csv', 'r') as read_file:
+    with open('greystudents.csv', 'r') as read_file:
         reader = csv.reader(read_file)
         for row in reader:
             if row[8] == username:
@@ -275,7 +275,7 @@ def get_name(username):
             return username
                 
 def get_email(username):
-    with open('/var/www/greycollegefamilytree.co.uk/http/familytree/greystudents.csv', 'r') as read_file:
+    with open('greystudents.csv', 'r') as read_file:
         reader = csv.reader(read_file)
         for row in reader:
             if row[8] == username:
@@ -284,7 +284,7 @@ def get_email(username):
 	    return None
 
 def already_registered(familylist):
-    with open('/var/www/greycollegefamilytree.co.uk/http/familytree/families.csv', 'r') as read_file:
+    with open('families.csv', 'r') as read_file:
         reader = csv.reader(read_file)
         for row in reader:
             if row[0] in familylist[0:1] or row[1] in familylist[0:1] or row[2] in familylist[2:] or row[3] in familylist[2:]:
@@ -295,7 +295,7 @@ def already_registered(familylist):
 def verify_family(family):
     family_details = [ast.literal_eval(str(i)).keys()[0] for i in family]
     if not already_registered(family_details):
-        with open('/var/www/greycollegefamilytree.co.uk/http/familytree/families.csv', 'a') as csvfile:
+        with open('families.csv', 'a') as csvfile:
             writer = csv.writer(csvfile, delimiter=',', quotechar='|')
             writer.writerow(family_details)
         ft.readdata()
@@ -304,7 +304,7 @@ def verify_family(family):
         return 'Your family is already registered in the family tree!'
     
 def confirm_registration(user, rand):
-    with open('/var/www/greycollegefamilytree.co.uk/http/familytree/registrations.csv', 'r') as read_file:
+    with open('registrations.csv', 'r') as read_file:
         reader = csv.reader(read_file)
         for row_num, row in enumerate(reader):
             if str(row[0]) == str(rand):
@@ -312,7 +312,7 @@ def confirm_registration(user, rand):
                     newrow = row
                     if user in ast.literal_eval(person).keys()[0]:
                         if not ast.literal_eval(row[1+i])[user]:
-                            with open('/var/www/greycollegefamilytree.co.uk/http/familytree/registrations.csv', 'rb') as b:
+                            with open('registrations.csv', 'rb') as b:
                                 rows = csv.reader(b)
                                 row_list = []
                                 row_list.extend(rows)
@@ -320,7 +320,7 @@ def confirm_registration(user, rand):
                             newrow[1+i] = {user:True}
 			    line_to_override = {row_num:newrow}
 
-                            with open('/var/www/greycollegefamilytree.co.uk/http/familytree/registrations.csv', 'wb') as b:
+                            with open('registrations.csv', 'wb') as b:
                                 writer = csv.writer(b)
                                 for line, row in enumerate(row_list):
                                     data = line_to_override.get(line, row)
@@ -341,9 +341,9 @@ def process(familylist):
 	    return 'One or more of the usernames are invalid/cannot be found.'
     if not any(familylist.count(x) > 1 for x in familylist): #CHANGE THIS TO NOT
         if not already_registered(familylist):
-            with open('/var/www/greycollegefamilytree.co.uk/http/familytree/registrations.csv', 'a') as write_file:
+            with open('registrations.csv', 'a') as write_file:
                 writer = csv.writer(write_file, delimiter=',', quotechar='|')
-		randid = str(generate_randid(4, "ABCDEFGHIJKLMNOPQRSTUVWXYZ"))
+		randid = str(generate_randid(4, "ABCDEFGHIJKLMNOPQRSTUVWXYZ123456789"))
                 family = [randid]
                 for i in familylist:
                     family.append({i:False})

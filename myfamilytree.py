@@ -188,6 +188,7 @@ def get_person(name='', id=999999999999):
         elif int(person.get_id()) == int(id):
             return [person]
         split_person_name = person_name.split()
+        if split_person_name[0].lower() == 'caz': split_person_name[0] = 'caroline'
         if len(split_person_name[0]) >= 3 and name.lower().split() != []:
             if split_person_name[0][:2] == name.lower().split()[0][:2] and split_person_name[-1] == name.lower().split()[-1]:
                 return [person]
@@ -355,10 +356,10 @@ def main(start_node=None):
         <script type='text/javascript' src='http://d3js.org/d3.v3.min.js'></script>  
 
         <!-- Bootstrap Core CSS -->
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+        <link rel="stylesheet" href="/static/css/bootstrap.min.css">
 
         <!-- Custom CSS -->
-        <link rel="stylesheet" href="/css/logo-nav.css">
+        <link rel="stylesheet" href="/static/css/logo-nav.css">
 
         <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
         <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -369,7 +370,7 @@ def main(start_node=None):
     </head>
          
           <style type='text/css'>
-            body {
+            #graph {
             font: 10px sans-serif;
         }
         .link {
@@ -660,10 +661,10 @@ def main(start_node=None):
         <!-- /.container -->
         
         <!-- jQuery -->
-        <script src="https://code.jquery.com/jquery-1.12.1.min.js"></script>
+        <script src="js/jquery.js"></script>
 
         <!-- Bootstrap Core JavaScript -->
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+        <script src="js/bootstrap.min.js"></script>
 
     </body>
 

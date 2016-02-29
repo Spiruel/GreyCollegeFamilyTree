@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, flash, redirect
 import myfamilytree as ft
 import register as reg
+import re
 
 app = Flask(__name__)
 app.secret_key = 'some_secret'
@@ -8,7 +9,7 @@ app.secret_key = 'some_secret'
 import logging
 from logging.handlers import SMTPHandler
 
-file_handler = logging.FileHandler(filename='/var/www/greycollegefamilytree.co.uk/grey_error.log')
+file_handler = logging.FileHandler(filename='grey_error.log')
 file_handler.setLevel(logging.WARNING)
 app.logger.addHandler(file_handler)
 
@@ -57,6 +58,7 @@ def register():
     
 @app.route('/about.html')
 def about():
+    raise Exception('Deliberate exception raised')
     return render_template('about.html')
     
 @app.route('/register.html', methods=['POST'])
@@ -66,8 +68,11 @@ def reg_form_post():
     child1 = request.form['child1']
     child2 = request.form['child2']
     familylist = [parent1, parent2, child1, child2]
-    #raise Exception(" ".join(familylist))
-    #print familylist
+    pattern = re.compile("^[a-z]{4}\d{2}$")
+    for i in familylist:
+        if bool(pattern.match(i)) is False:
+            return render_template('confirm.html', alert='Error: Please enter a valid CIS username.')
+    print familylist
     alert = reg.process(familylist)
     print 'Received family registration!' ,parent1,parent2,child1,child2
     return render_template('confirm.html', alert=alert)
