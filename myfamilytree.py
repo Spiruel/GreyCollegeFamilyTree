@@ -355,7 +355,7 @@ def main(start_node=None):
         <script type='text/javascript' src='http://d3js.org/d3.v3.min.js'></script>  
 
         <!-- Bootstrap Core CSS -->
-        <link rel="stylesheet" href="/static/css/bootstrap.min.css">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
 
         <!-- Custom CSS -->
         <link rel="stylesheet" href="/static/css/logo-nav.css">
@@ -660,10 +660,10 @@ def main(start_node=None):
         <!-- /.container -->
         
         <!-- jQuery -->
-        <script src="js/jquery.js"></script>
+        <script src="https://code.jquery.com/jquery-1.12.1.min.js"></script>
 
         <!-- Bootstrap Core JavaScript -->
-        <script src="js/bootstrap.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
 
     </body>
 

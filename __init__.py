@@ -1,6 +1,6 @@
 from flask import Flask, render_template, request, flash, redirect
-from . import myfamilytree as ft
-from . import register as reg
+import myfamilytree as ft
+import register as reg
 
 app = Flask(__name__)
 app.secret_key = 'some_secret'
@@ -57,7 +57,6 @@ def register():
     
 @app.route('/about.html')
 def about():
-    raise Exception('Deliberate exception raised')
     return render_template('about.html')
     
 @app.route('/register.html', methods=['POST'])
@@ -67,6 +66,8 @@ def reg_form_post():
     child1 = request.form['child1']
     child2 = request.form['child2']
     familylist = [parent1, parent2, child1, child2]
+    #raise Exception(" ".join(familylist))
+    #print familylist
     alert = reg.process(familylist)
     print 'Received family registration!' ,parent1,parent2,child1,child2
     return render_template('confirm.html', alert=alert)
