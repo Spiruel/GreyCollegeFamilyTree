@@ -108,14 +108,15 @@ class Person:
                 return 'F'
         
 def get_user_details(username):
-    with open('/var/www/greycollegefamilytree.co.uk/http/familytree/greystudents.csv', 'rb') as csvfile:
-        reader = csv.reader(csvfile, delimiter=',', quotechar='|')
-        for row in reader:
-            if username == str(row[8])[1:-1]:
-                details = username, row[1].split(' ')[0].replace('"',''), row[0].replace('"',''), row[6]
-                return details
-        else:
-            return username.upper()
+    for filename in ['greystudents.csv', 'greystudents2014.csv']:
+        with open(filename, 'rb') as csvfile:
+            reader = csv.reader(csvfile, delimiter=',', quotechar='|')
+            for row in reader:
+                if username == str(row[8])[1:-1]:
+                    details = username, row[1].split(' ')[0].replace('"',''), row[0].replace('"',''), row[6]
+                    return details
+    else:
+        return username.upper()
             
 def empty_node():
     global empty_node_id
@@ -133,24 +134,26 @@ def exists_already(familymember):
         return get_person(familymember)[0]
             
 def readdata():
-    parents1, parents2, children1, children2 = [],[],[],[]
-    with open('/var/www/greycollegefamilytree.co.uk/http/familytree/families.csv') as csvfile:
+    parents, childrens = [],[]
+    with open('families.csv') as csvfile:
         reader = csv.reader(csvfile, delimiter=',',quotechar='|', quoting=csv.QUOTE_ALL)
         for row in reader:
-                parent1 = str(row[0])
-                parent2 = str(row[1])
-                child1 = str(row[2])
-                child2 = str(row[3])
-                parents1.append(parent1)
-                parents2.append(parent2)
-                children1.append(child1)
-                children2.append(child2)
-    for i in range(len(parents1)):
-        parents1_nospace = exists_already(parents1[i])
-        parents2_nospace = exists_already(parents2[i])
-        children1_nospace = exists_already(children1[i])
-        children2_nospace = exists_already(children2[i])
-        marriages.append(Marriage(2014, parents1_nospace, parents2_nospace, [children1_nospace, children2_nospace]))
+            parent1 = str(row[0])
+            parent2 = str(row[1])
+            parents.append([parent1,parent2])
+            if len(row) <= 3:
+                childrens.append([str(row[2])])
+            elif len(row) <=4:
+                childrens.append([str(row[2]),str(row[3])])
+            elif len(row) > 4:
+                childrens.append([str(row[i]) for i in range(2,len(row))])
+    for i in range(len(parents)):
+        parents1_nospace = exists_already(parents[i][0])
+        parents2_nospace = exists_already(parents[i][1])
+        # children1_nospace = exists_already(childrens[i][0])
+        # children2_nospace = exists_already(childrens[i][1])
+        childrens_nospace = [exists_already(childrens[i][k]) for k in range(len(childrens[i]))]
+        marriages.append(Marriage(2014, parents1_nospace, parents2_nospace, childrens_nospace))
 
 def list_append(lst, item):
     lst.append(item)
@@ -271,7 +274,7 @@ def get_children_nodes(children):
         current_obj = root_nodes(child)
         if child_nodes is None:
             child_nodes = current_obj
-        else: 
+        else:
             child_nodes = child_nodes, current_obj
     return child_nodes
        
@@ -300,7 +303,11 @@ def root_nodes(people, first_node=False):
                 people_used.append(partners[0])
                 people_used.append(partners[1])
                 children_tuple = get_children_nodes(children)
-                children_list = [element for tupl in children_tuple for element in tupl]
+                if len(children_tuple) != 2:
+                    children_list = children_tuple
+                else:
+                    children_list = [element for tupl in children_tuple for element in tupl]
+                               
                 if partners[0].get_parents() == ['None', 'None'] or partners[1].get_parents() == ['None', 'None']:
                     if partners[0].get_parents() == ['None', 'None'] and partners[1].get_parents() == ['None', 'None']:
                         current_obj = {'name': str(husband), 'id': husband_id, 'no_parent': 'true'}, {'name': '', 'id': 'empty_node_id_' + empty_node(), 'no_parent': 'true', 'hidden': 'true', 'children': children_list}, {'name': str(wife), 'id': wife_id, 'no_parent': 'true', 'children': []}               
@@ -337,7 +344,7 @@ def main(start_node=None):
 
     root = str(json.dumps(root_nodes(start_node, first_node=True), indent=4 * ' ', sort_keys = True, ensure_ascii=False))
     
-    database_stats = 'Family Tree database contains ' + str(len(marriages)) + ' marriages involving ' + str(len(people)) + ' people as of ' + str(time.ctime(os.path.getmtime('/var/www/greycollegefamilytree.co.uk/http/familytree/families.csv'))) + '.'
+    database_stats = 'Family Tree database contains ' + str(len(marriages)) + ' marriages involving ' + str(len(people)) + ' people as of ' + str(time.ctime(os.path.getmtime('families.csv'))) + '.'
     family_stats = get_family_stats(people_used)
         
     html_content = '''
@@ -647,6 +654,7 @@ def main(start_node=None):
         
         <h1>'''+str(student_name)+'''</h1>
         <h4>'''+str(family_stats)+'''</h4>
+        <p>Click on family members to navigate around a family tree!</p>
         
         <div id="graph"></div>
         

@@ -24,8 +24,18 @@ def generate_randid(size=6, chars=string.ascii_uppercase + string.digits):
 
 def send_email(user, familylist, randid, fromaddr = 'noreply@greycollegefamilytree.co.uk'):
     token = str(generate_confirmation_token(user+randid))
-    toaddrs = get_email(user)
+    toaddrs = 'samuel.bancroft@scarrowhill.co.uk'#get_email(user)
     
+    family_info = """            
+    <p>College Father: """+get_name(familylist[0])+"""</p>
+    <p>College Mother: """+get_name(familylist[1])+"""</p>
+    <p>College Child #1: """+get_name(familylist[2])+"""</p>
+    """
+
+    if len(familylist) > 3:
+        for i in range(3,len(familylist)):
+            family_info = family_info + "<p>College Child #"+str(i)+": """+get_name(familylist[i])+"</p>"
+            
     msg = """from: Grey College Family Tree <spiruel@gmail.com>
 to: """+user+""" <"""+toaddrs+""">
 content-type: text/html
@@ -194,10 +204,7 @@ ol li {
             <p>You\'re receiving this email because someone has registered family details as part of the Grey College family tree.</p>
             <p>The college family details are:</p>
             <b>
-            <p>College Father: """+get_name(familylist[0])+"""</p>
-            <p>College Mother: """+get_name(familylist[1])+"""</p>
-            <p>College Child #1: """+get_name(familylist[2])+"""</p>
-            <p>College Child #2: """+get_name(familylist[3])+"""</p>
+            """+family_info+"""
             </b>
             <p>Does this look correct? Click the button below to confirm your place on the family tree.</p>
 	    <p><b>You have a time limit of 24 hours before the verification links expire.</b></p>
@@ -266,22 +273,23 @@ ol li {
     server.quit()
 
 def get_name(username):
-    with open('greystudents.csv', 'r') as read_file:
-        reader = csv.reader(read_file)
-        for row in reader:
-            if row[8] == username:
-                return row[1] + ' ' + row[0]
-        else:
-            return username
-                
-def get_email(username):
-    with open('greystudents.csv', 'r') as read_file:
+    for filename in ['greystudents.csv', 'greystudents2014.csv']:
+        with open(filename, 'r') as read_file:
+            reader = csv.reader(read_file)
+            for row in reader:
+                if row[8] == username:
+                    return row[1] + ' ' + row[0]
+    else:
+        return username
+                       
+def get_email(username, filename='greystudents.csv'):
+    with open(filename, 'r') as read_file:
         reader = csv.reader(read_file)
         for row in reader:
             if row[8] == username:
                 return row[9]
         else:
-	    return None
+            return None
 
 def already_registered(familylist):
     with open('families.csv', 'r') as read_file:
@@ -337,20 +345,26 @@ def confirm_registration(user, rand):
             
 def process(familylist):
     for i in familylist:
-	if get_email(i) is None:
-	    return 'One or more of the usernames are invalid/cannot be found.'
+        if get_email(i) is None and any(char.isdigit() for char in get_name(i)):
+            return 'One or more of the usernames are invalid/cannot be found.'
     if not any(familylist.count(x) > 1 for x in familylist): #CHANGE THIS TO NOT
         if not already_registered(familylist):
             with open('registrations.csv', 'a') as write_file:
                 writer = csv.writer(write_file, delimiter=',', quotechar='|')
-		randid = str(generate_randid(4, "ABCDEFGHIJKLMNOPQRSTUVWXYZ123456789"))
+                randid = str(generate_randid(4, "ABCDEFGHIJKLMNOPQRSTUVWXYZ123456789abcdefghijklmnopqrstuvwxyz"))
                 family = [randid]
                 for i in familylist:
-                    family.append({i:False})
+                    if get_email(i) is None and get_name(i) is not None:
+                        family.append({i:True})
+                    else:
+                        family.append({i:False})
                 writer.writerow(family)
             for person in familylist:
                 print 'Sending verification link to', person
-                send_email(person,familylist,randid)
+                if get_email(person) is not None:
+                    send_email(person,familylist,randid)
+                else:
+                    print 'Not sending email because user doesn\'t exist anymore.'
             return 'Success: Received family registration request. Please check your @durham.ac.uk email inbox and spam folder!'
         else:
             return 'Error: Already registered in the family tree database.'

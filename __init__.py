@@ -67,14 +67,18 @@ def reg_form_post():
     parent2 = request.form['partner2']
     child1 = request.form['child1']
     child2 = request.form['child2']
-    familylist = [parent1, parent2, child1, child2]
+    child3 = request.form['child3']
+    child4 = request.form['child4']
+    familylist = [parent1, parent2, child1]
+    for child in [child2, child3, child4]:
+        if child is not False:
+            familylist.append(child)
     pattern = re.compile("^[a-z]{4}\d{2}$")
     for i in familylist:
         if bool(pattern.match(i)) is False:
             return render_template('confirm.html', alert='Error: Please enter a valid CIS username.')
-    print familylist
     alert = reg.process(familylist)
-    print 'Received family registration!' ,parent1,parent2,child1,child2
+    print 'Received family registration!' ,familylist
     return render_template('confirm.html', alert=alert)
     
 @app.route('/confirm/', methods=['GET'])
@@ -93,7 +97,9 @@ def confirm():
   
 if __name__ == '__main__':
     app.debug = True
-    #app.run(host='0.0.0.0')
+    ft.readdata()
+    name = ''
+    html_content = ft.main()
     app.run()
     redirect('index.html')
 
