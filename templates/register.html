@@ -27,21 +27,28 @@ div#loading {
     <p>Don't know CIS usernames for your college family? <a target="_blank" href="http://community.dur.ac.uk/grey.jcr/onlineServices/findUser.php"><b>Look them up here.</b></a></p>
     <p>Note: The 'college dad' and 'college mum' titles are not gender-dependent.</p>
     <p>A CIS username should consist of lowercase letters and numbers. A green tick symbol will indicate if the username is of the correct form.</p>
-    <p>Please enter your username, as a parent or child, and the usernames of the rest of your college family.</p>
+    <p>Please enter <b>your username</b>, as a parent or child, and the usernames of the rest of your college family.</p>
 
     <form method="POST" name="registrationform">
-      The college dad's username:<br>
-      <input type="text" name="partner1" >
+      The college dad's username: *<br>
+      <input type="text" name="partner1" pattern="^[a-z]{4}\d{2}$">
       <br>
-      <br>The college mum's username:<br>
-      <input type="text" name="partner2" >
+      <br>The college mum's username: *<br>
+      <input type="text" name="partner2" pattern="^[a-z]{4}\d{2}$">
       <br>
-      <br>College child #1's username:<br>
-      <input type="text" name="child1" >
+      <br>College child #1's username: *<br>
+      <input type="text" name="child1" pattern="^[a-z]{4}\d{2}$">
       <br>
-      <br>College child #2's username:<br>
-      <input type="text" name="child2" >
-      <br><br>
+      <br>College child #2's username (leave blank if needed):<br>
+      <input type="text" name="child2" pattern="^[a-z]{4}\d{2}$">
+      <br>
+      <br>College child #3's username (leave blank if needed):<br>
+      <input type="text" name="child3" pattern="^[a-z]{4}\d{2}$">
+      <br>
+      <br>College child #4's username (leave blank if needed):<br>
+      <input type="text" name="child4" pattern="^[a-z]{4}\d{2}$">
+      <br>
+      <br>
       <input type="submit" name="anything_submit" value="Submit" onclick="loading();">
     </form> 
     <p>
